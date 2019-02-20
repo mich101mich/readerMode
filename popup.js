@@ -1,8 +1,3 @@
-// Copyright 2018 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-'use strict';
 
 /**@type {HTMLButtonElement} */
 const button = document.getElementById('toggle');
@@ -53,17 +48,16 @@ chrome.storage.sync.get('blacklist', (/** @type { { blacklist: string } } */ { b
 
 		chrome.tabs.executeScript(
 			tab.id,
-			{ code: `window.moveSpeed` },
-			(stuff) => {
-				console.log(stuff);
-				speed.value = stuff[0];
+			{ code: `window.readerModeScrollSpeed` },
+			([readerModeScrollSpeed]) => {
+				speed.value = readerModeScrollSpeed;
 				speedForm.addEventListener("submit", e => {
 
 					const val = parseInt(speed.value);
 					if (val && !isNaN(val) && val > 0) {
 						chrome.tabs.executeScript(
 							tab.id,
-							{ code: `window.moveSpeed = ${val};` }
+							{ code: `window.readerModeScrollSpeed = ${val};` }
 						);
 						window.close();
 					}
