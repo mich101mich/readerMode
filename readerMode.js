@@ -42,7 +42,7 @@ chrome.storage.sync.get('blacklist', ({ blacklist }) => {
 			return false;
 		}
 		let style = getComputedStyle(element);
-		return /(auto|scroll)/.test(style.overflow + style.overflowY + style.overflowX)
+		return /(auto|scroll)/.test(style.overflow + style.overflowY + style.overflowX) && element.scrollHeight != element.clientHeight;
 	}
 
 	/**
@@ -101,6 +101,11 @@ chrome.storage.sync.get('blacklist', ({ blacklist }) => {
 				scrollY += map[k][1];
 			}
 		}
+
+		if (scrollX == 0 && scrollY == 0) {
+			return;
+		}
+
 		let targets = document.querySelectorAll(":hover");
 		let target = getScrollParent(targets[targets.length - 1]);
 		defaultTarget = target;
