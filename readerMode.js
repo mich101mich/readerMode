@@ -118,4 +118,8 @@ chrome.storage.sync.get('blacklist', ({ blacklist }) => {
 	moveStuff();
 
 	console.log("Reader Mode " + chrome.runtime.getManifest().version + " enabled");
+
+	const script = document.createElement("script");
+	script.innerText = "let disableBlockAdBlockCounter = 0; function disableBlockAdBlock() {if (++disableBlockAdBlockCounter > 1000) { return; } if (typeof BGWRSzJxTu != 'undefined') { console.log(':P'); BGWRSzJxTu.clear(); return; }; requestAnimationFrame(disableBlockAdBlock); }; disableBlockAdBlock();";
+	document.body.appendChild(script);
 });
