@@ -71,6 +71,9 @@ chrome.storage.sync.get('blacklist', ({ blacklist }) => {
 	}
 
 	document.addEventListener("keydown", e => {
+		if (!e.key) { // apparently this is a thing...
+			return;
+		}
 		const key = e.key.toLowerCase();
 		if (!keyboardUsed()) {
 			keyDown[key] = true;
@@ -81,6 +84,9 @@ chrome.storage.sync.get('blacklist', ({ blacklist }) => {
 	});
 
 	document.addEventListener("keyup", e => {
+		if (!e.key) { // apparently this is a thing...
+			return;
+		}
 		const key = e.key.toLowerCase();
 		keyDown[key] = false;
 		if (!keyboardUsed() && key in map) {
