@@ -27,7 +27,7 @@ chrome.storage.sync.get('blacklist', ({ blacklist }) => {
 	function keyboardUsed() {
 		const active = document.activeElement;
 
-		return keyDown["ctrl"]
+		return keyDown["control"] || keyDown["alt"] || keyDown["meta"]
 			|| (active instanceof HTMLElement ? active.isContentEditable : false)
 			|| active instanceof HTMLInputElement
 			|| active instanceof HTMLTextAreaElement
@@ -72,9 +72,11 @@ chrome.storage.sync.get('blacklist', ({ blacklist }) => {
 
 	document.addEventListener("keydown", e => {
 		const key = e.key.toLowerCase();
-		keyDown[key] = true;
-		if (!keyboardUsed() && key in map) {
-			e.preventDefault();
+		if (!keyboardUsed()) {
+			keyDown[key] = true;
+			if (key in map) {
+				e.preventDefault();
+			}
 		}
 	});
 
