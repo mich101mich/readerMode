@@ -70,12 +70,23 @@ chrome.storage.sync.get('blacklist', ({ blacklist }) => {
 		return defaultTarget;
 	}
 
+	/**
+	 * @param {KeyboardEvent} e 
+	 */
+	function specialKeys(e) {
+		keyDown["control"] = e.ctrlKey;
+		keyDown["shift"] = e.shiftKey;
+		keyDown["alt"] = e.altKey;
+		keyDown["meta"] = e.metaKey;
+	}
+
 	document.addEventListener("keydown", e => {
 		if (!e.key) { // apparently this is a thing...
 			return;
 		}
-		const key = e.key.toLowerCase();
+		specialKeys(e);
 		if (!keyboardUsed()) {
+			const key = e.key.toLowerCase();
 			keyDown[key] = true;
 			if (key in map) {
 				e.preventDefault();
@@ -89,6 +100,7 @@ chrome.storage.sync.get('blacklist', ({ blacklist }) => {
 		}
 		const key = e.key.toLowerCase();
 		keyDown[key] = false;
+		specialKeys(e);
 		if (!keyboardUsed() && key in map) {
 			e.preventDefault();
 		}
