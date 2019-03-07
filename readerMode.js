@@ -38,7 +38,12 @@ chrome.storage.sync.get('blacklist', ({ blacklist }) => {
 	 * @param {Element | Window} element
 	 */
 	function canScroll(element) {
-		if (!element || !(element instanceof Element)) {
+		if (!element) {
+			return false;
+		}
+		if (element == window) {
+			return document.body.clientHeight > window.innerHeight;
+		} else if (!(element instanceof Element)) {
 			return false;
 		}
 		let style = getComputedStyle(element);
@@ -61,10 +66,14 @@ chrome.storage.sync.get('blacklist', ({ blacklist }) => {
 		if (getComputedStyle(element).position === "fixed") {
 			return canScroll(element) ? element : defaultTarget;
 		}
-		for (let parent = element; parent; parent = parent.parentElement) {
+		for (let parent = element; parent && parent != document.body; parent = parent.parentElement) {
 			if (canScroll(parent)) {
-				return parent == document.body ? defaultTarget : parent;
+				return parent;
 			}
+		}
+
+		if (canScroll(window)) {
+			return window;
 		}
 
 		return defaultTarget;
