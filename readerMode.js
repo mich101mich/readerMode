@@ -147,6 +147,30 @@ chrome.storage.sync.get('blacklist', ({ blacklist }) => {
 	console.log("Reader Mode " + chrome.runtime.getManifest().version + " enabled");
 
 	const script = document.createElement("script");
-	script.innerText = "let disableBlockAdBlockCounter = 0; function disableBlockAdBlock() {if (++disableBlockAdBlockCounter > 1000) { return; } if (typeof BGWRSzJxTu != 'undefined') { console.log(':P'); BGWRSzJxTu.clear(); return; }; requestAnimationFrame(disableBlockAdBlock); }; disableBlockAdBlock();";
+	script.type = "text/javascript";
+	script.id = "BlockBlockAdBlockScript";
+	script.innerText = `
+		{
+			let count = 0;
+			let id = setInterval(check, 500);
+			function check() {
+				for (s in window) {
+					if (s.length == 10 && window[s] && typeof window[s] == "object" && typeof window[s]["clear"] == "function") {
+						console.log("Cleared:", s, window[s]);
+						window[s].clear();
+						stopScript();
+						return;
+					}
+				}
+				if (++count > 100) {
+					stopScript();
+				}
+			}
+			function stopScript() {
+				clearInterval(id);
+				document.getElementById("${script.id}").remove();
+			}
+		}
+	`.replace(/\r?\n\s*/g, "");
 	document.body.appendChild(script);
 });
