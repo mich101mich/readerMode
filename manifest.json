@@ -1,11 +1,13 @@
 {
 	"name": "Reader Mode",
-	"version": "1.3.4",
+	"version": "1.4.0",
 	"description": "- Activates wasd-scrolling on every website\n- Makes the New Tab page empty and grey\n- Disables some BlockAdBlock scripts",
 	"permissions": [
 		"activeTab",
 		"storage",
-		"tabs"
+		"tabs",
+		"<all_urls>",
+		"downloads"
 	],
 	"background": {
 		"scripts": [

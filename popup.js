@@ -10,6 +10,13 @@ const speedForm = document.getElementById('speedForm');
 /**@type {HTMLInputElement} */
 const speed = document.getElementById('speed');
 
+/**@type {HTMLFormElement} */
+const downloadForm = document.getElementById('downloadForm');
+/**@type {HTMLInputElement} */
+const downloads = document.getElementById('downloads');
+/**@type {HTMLInputElement} */
+const pathInput = document.getElementById('pathInput');
+
 chrome.storage.sync.get('blacklist', (/** @type { { blacklist: string } } */ { blacklist }) => {
 	chrome.tabs.query({ active: true, currentWindow: true }, function ([tab]) {
 		const match = /\/\/((.*?\.)+.+?\/)/.exec(tab.url);
@@ -68,6 +75,33 @@ chrome.storage.sync.get('blacklist', (/** @type { { blacklist: string } } */ { b
 		);
 	});
 });
+
+let path = "dl";
+let dlCount = 0;
+chrome.downloads.onDeterminingFilename.addListener(function (downloadItem, suggest) {
+	if (dlCount == 0) {
+		return;
+	}
+	dlCount--;
+	suggest({filename: path + "/" + downloadItem.filename});
+});
+
+downloadForm.addEventListener("submit", e => {
+
+	path = pathInput.value;
+
+	const urls = downloads.value.trim().split("\n");
+	for (const url of urls) {
+		if (!url) {
+			continue;
+		}
+		console.log("downloading", url);
+		chrome.downloads.download({ url });
+		dlCount++;
+	}
+
+	e.preventDefault();
+})
 
 function update(id, updated) {
 	chrome.storage.sync.set({ blacklist: updated }, () => {
