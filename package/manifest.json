@@ -1,0 +1,28 @@
+{
+	"manifest_version": 3,
+	"name": "Reader Mode",
+	"version": "2.0.0",
+	"description": "- Activates wasd-scrolling on every website\n- Makes the New Tab page empty and grey",
+	"permissions": [
+		"activeTab",
+		"tabs"
+	],
+	"host_permissions": [
+		"*://*/*",
+		"file:///*"
+	],
+	"chrome_url_overrides": {
+		"newtab": "newtab.html"
+	},
+	"content_scripts": [
+		{
+			"matches": [
+				"*://*/*",
+				"file:///*"
+			],
+			"js": [
+				"readerMode.js"
+			]
+		}
+	]
+}
