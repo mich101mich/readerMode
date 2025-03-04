@@ -2,11 +2,8 @@
 	"manifest_version": 3,
 	"name": "Reader Mode",
 	"version": "2.0.0",
-	"description": "- Activates wasd-scrolling on every website\n- Makes the New Tab page empty and grey",
-	"permissions": [
-		"activeTab",
-		"tabs"
-	],
+	"description": "Activates wasd-scrolling on every website and makes the New Tab page empty and grey",
+	"permissions": [],
 	"host_permissions": [
 		"*://*/*",
 		"file:///*"
